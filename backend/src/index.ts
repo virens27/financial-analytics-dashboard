@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
 import transactionRoutes from "./routes/transactions";
+import exportRoutes from "./routes/export";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/transactions/export", exportRoutes);
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });

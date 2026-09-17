@@ -1,48 +1,20 @@
 import { Router, Response } from "express";
 import Transaction from "../models/Transaction";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
+import { buildTransactionFilter } from "../utils/buildTransactionFilter";
 
 const router = Router();
 
 router.get("/", authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const {
-      search,
-      category,
-      status,
-      userId,
-      dateFrom,
-      dateTo,
-      amountMin,
-      amountMax,
       sortBy = "date",
       sortOrder = "desc",
       page = "1",
       limit = "10",
     } = req.query;
 
-    const filter: any = {};
-
-    if (category) filter.category = category;
-    if (status) filter.status = status;
-    if (userId) filter.userId = { $regex: userId as string, $options: "i" };
-
-    if (dateFrom || dateTo) {
-      filter.date = {};
-      if (dateFrom) filter.date.$gte = new Date(dateFrom as string);
-      if (dateTo) filter.date.$lte = new Date(dateTo as string);
-    }
-
-    if (amountMin || amountMax) {
-      filter.amount = {};
-      if (amountMin) filter.amount.$gte = Number(amountMin);
-      if (amountMax) filter.amount.$lte = Number(amountMax);
-    }
-
-    if (search) {
-      const searchRegex = { $regex: search as string, $options: "i" };
-      filter.$or = [{ userId: searchRegex }, { category: searchRegex }, { status: searchRegex }];
-    }
+    const filter = buildTransactionFilter(req.query);
 
     const pageNum = Math.max(1, parseInt(page as string, 10) || 1);
     const limitNum = Math.max(1, parseInt(limit as string, 10) || 10);

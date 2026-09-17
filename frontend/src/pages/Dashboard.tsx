@@ -24,6 +24,7 @@ import {
   Cell,
 } from "recharts";
 import { getAllTransactions, type Transaction } from "../api/transactions";
+import TransactionsTable from "../components/TransactionsTable";
 
 const COLORS = { Revenue: "#2e7d32", Expense: "#c62828" };
 
@@ -187,6 +188,8 @@ export default function Dashboard() {
           </Card>
         </Grid>
       </Grid>
+
+      <TransactionsTable />
     </Box>
   );
 }

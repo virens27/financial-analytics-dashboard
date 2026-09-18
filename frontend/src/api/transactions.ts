@@ -55,3 +55,11 @@ export async function getTransactions(
   );
   return response.data;
 }
+
+export async function exportTransactionsCSV(columns: string[]): Promise<Blob> {
+  const response = await apiClient.get("/api/transactions/export", {
+    params: { columns: columns.join(",") },
+    responseType: "blob",
+  });
+  return response.data;
+}

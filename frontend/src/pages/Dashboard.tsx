@@ -25,6 +25,7 @@ import {
 } from "recharts";
 import { getAllTransactions, type Transaction } from "../api/transactions";
 import TransactionsTable from "../components/TransactionsTable";
+import ExportModal from "../components/ExportModal";
 
 const COLORS = { Revenue: "#2e7d32", Expense: "#c62828" };
 
@@ -33,6 +34,7 @@ export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [exportOpen, setExportOpen] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -101,9 +103,14 @@ export default function Dashboard() {
     <Box sx={{ p: 4 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
         <Typography variant="h4">Dashboard</Typography>
-        <Button variant="outlined" onClick={handleLogout}>
-          Log Out
-        </Button>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Button variant="contained" onClick={() => setExportOpen(true)}>
+            Export CSV
+          </Button>
+          <Button variant="outlined" onClick={handleLogout}>
+            Log Out
+          </Button>
+        </Box>
       </Box>
 
       <Grid container spacing={2} sx={{ mb: 4 }}>
@@ -190,6 +197,8 @@ export default function Dashboard() {
       </Grid>
 
       <TransactionsTable />
+
+      <ExportModal open={exportOpen} onClose={() => setExportOpen(false)} />
     </Box>
   );
 }

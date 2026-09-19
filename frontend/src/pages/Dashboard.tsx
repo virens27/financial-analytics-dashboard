@@ -27,7 +27,7 @@ import { getAllTransactions, type Transaction } from "../api/transactions";
 import TransactionsTable from "../components/TransactionsTable";
 import ExportModal from "../components/ExportModal";
 
-const COLORS = { Revenue: "#2e7d32", Expense: "#c62828" };
+const COLORS = { Revenue: "#4ade80", Expense: "#f87171" };
 
 export default function Dashboard() {
   const navigate = useNavigate();
